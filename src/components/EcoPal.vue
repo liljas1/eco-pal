@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-navbar>
+        <b-navbar type="is-dark" fixed-top>
             <template slot="start">
                 <b-navbar-item href="#">
                     Upload a location
@@ -20,7 +20,7 @@
         </b-navbar>
 
         <GmapMap
-            :center="{lat:10, lng:10}"
+            :center="{lat:5, lng:5}"
             :zoom="7"
             style="width: 1080px; height: 720px; margin: 20px auto"
             >
