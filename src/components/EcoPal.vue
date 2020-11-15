@@ -2,7 +2,7 @@
     <div>
         <b-navbar type="is-dark" fixed-top>
             <template slot="start">
-                <b-navbar-item>
+                <b-navbar-item href=#>
                     Home
                 </b-navbar-item>
                 <b-navbar-dropdown label="Info">
@@ -19,10 +19,10 @@
                 <b-navbar-item tag="div">
                     <div class="buttons">
                         <a class="button is-primary">
-                            <strong>Sign up</strong>
+                            <router-link to="/helloworld" tag="p">Sign up</router-link>
                         </a>
                         <a class="button is-light">
-                            Log in
+                            <router-link to="/home">Log in</router-link>
                         </a>
                     </div>
                 </b-navbar-item>
@@ -30,8 +30,10 @@
         </b-navbar>
 
         <section class="form">
-            <b-field>
+            <b-field label="Location">
                 <b-input placeholder="e.g. Vrbik 8, Zagreb, Croatia"></b-input>
+            </b-field>
+            <b-field class="file is-primary">
                 <b-upload v-model="file" class="file-label">
                     <span class="file-cta">
                         <b-icon class="file-icon" icon="upload"></b-icon>
@@ -42,7 +44,6 @@
                     </span>
                 </b-upload>
             </b-field>
-
             <b-field label="Discription" class="discription">
                 <b-input maxlength="200" type="textarea"></b-input>
             </b-field>

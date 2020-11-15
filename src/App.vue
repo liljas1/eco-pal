@@ -1,16 +1,16 @@
 <template>
   <div id="app">
-    <EcoPal msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import EcoPal from './components/EcoPal.vue'
+// import EcoPal from './components/EcoPal.vue'
 
 export default {
   name: 'App',
   components: {
-    EcoPal
+    // EcoPal
   }
 }
 </script>
