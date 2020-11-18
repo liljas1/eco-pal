@@ -33,7 +33,7 @@
         <b-button type="is-primary is-light">Get Started</b-button>
       </div>
       <div class="text">
-        <p>Already have an account? <router-link to="/helloworld">Log in to Eco-Pal</router-link></p>
+        <p>Already have an account? <router-link to="/login">Log in to Eco-Pal</router-link></p>
       </div>
     </div>
   </div>

@@ -25,7 +25,7 @@
         <b-button @click="login" type="is-primary is-light" native-type="submit">Log In</b-button>
       </div>
       <div class="text">
-        <p>Dont have an account? <router-link to="/home">Sign up to Eco-Pal</router-link></p>
+        <p>Dont have an account? <router-link to="/signup">Sign up to Eco-Pal</router-link></p>
       </div>
     </div>
   </div>
