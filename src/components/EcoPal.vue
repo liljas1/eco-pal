@@ -19,10 +19,10 @@
                 <b-navbar-item tag="div">
                     <div class="buttons">
                         <a class="button is-primary">
-                            <router-link to="/helloworld" tag="p">Sign up</router-link>
+                            <router-link to="/signup" tag="p">Sign up</router-link>
                         </a>
                         <a class="button is-light">
-                            <router-link to="/home">Log in</router-link>
+                            <router-link to="/login">Log in</router-link>
                         </a>
                     </div>
                 </b-navbar-item>
