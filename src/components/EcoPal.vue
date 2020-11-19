@@ -52,7 +52,7 @@
         <section class="map">
             <GmapMap
                 :center="coordinates"
-                :zoom="7"
+                :zoom="12"
                 style="height: 720px; margin: 0 auto"
             >
             </GmapMap>
