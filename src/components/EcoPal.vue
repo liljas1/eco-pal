@@ -36,7 +36,6 @@
             <b-field class="file is-primary">
                 <b-upload v-model="file" class="file-label">
                     <span class="file-cta">
-                        <b-icon class="file-icon" icon="upload"></b-icon>
                         <span class="file-label">Click to upload</span>
                     </span>
                     <span class="file-name" v-if="file">
@@ -45,8 +44,9 @@
                 </b-upload>
             </b-field>
             <b-field label="Discription" class="discription">
-                <b-input maxlength="200" type="textarea"></b-input>
+                <b-input maxlength="200" type="textarea" placeholder="Type your message here..."></b-input>
             </b-field>
+            <b-button tag="router-link" to="/main" class="is-dark" type="is-link">Main Page</b-button>
         </section>
 
         <section class="map">
