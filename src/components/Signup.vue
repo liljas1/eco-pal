@@ -13,24 +13,24 @@
 
     <div class="signup">
       <h1>Create your Eco-Pal account</h1>
-      <b-field label="Username">
-          <b-input value="johnsilver" maxlength="30"></b-input>
+      <b-field label="Name">
+          <b-input placeholder="name" maxlength="30"></b-input>
       </b-field>
       <b-field label="Email">
-          <b-input type="email" value="john@" maxlength="30">
+          <b-input type="email" v-model="email" maxlength="30" placeholder="email">
           </b-input>
       </b-field>
       <b-field label="Password">
-          <b-input type="password" value="password123" password-reveal>
+          <b-input type="password" v-model="password" placeholder="password" password-reveal>
           </b-input>
       </b-field>
-      <div class="checkbox">
+      <div class="checkbox" id="checkbox">
         <div class="field">
-            <b-checkbox>I agree to the Eco-Pal Tearms of Service and Privacy Policy</b-checkbox>
+            <b-checkbox v-model="agree" :value="true">I agree to the Eco-Pal Tearms of Service and Privacy Policy</b-checkbox>
         </div>
       </div>
       <div class="submitButton">
-        <b-button type="is-primary is-light">Get Started</b-button>
+        <b-button @click="pressed" type="is-primary is-light">Get Started</b-button>
       </div>
       <div class="text">
         <p>Already have an account? <router-link to="/login">Log in to Eco-Pal</router-link></p>
@@ -41,7 +41,33 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/auth";
 export default {
+  methods: {
+    async pressed(){
+      if(this.agree){
+        try{
+          const user = await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+          console.log(user)
+          this.$router.replace({name: "home"})
+        }catch(err){
+          console.log(err)
+        }
+      }
+      else{
+        document.getElementById("checkbox").style.color = "red";
+        alert("Please check the box below")
+      }
+    }
+  },
+  data() {
+    return{
+      email: "",
+      password: "",
+      agree: false,
+    }
+  }
 }
 </script>
 

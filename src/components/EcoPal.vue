@@ -18,11 +18,8 @@
             <template slot="end">
                 <b-navbar-item tag="div">
                     <div class="buttons">
-                        <a class="button is-primary">
-                            <router-link to="/signup" tag="p">Sign up</router-link>
-                        </a>
-                        <a class="button is-light">
-                            <router-link to="/login">Log in</router-link>
+                        <a class="button is-light" @click="signOut">
+                            Sign out
                         </a>
                     </div>
                 </b-navbar-item>
@@ -46,7 +43,6 @@
             <b-field label="Discription" class="discription">
                 <b-input maxlength="200" type="textarea" placeholder="Type your message here..."></b-input>
             </b-field>
-            <b-button tag="router-link" to="/main" class="is-dark" type="is-link">Main Page</b-button>
         </section>
 
         <section class="map">
@@ -62,6 +58,8 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/auth";
     export default {
         data (){
             return{
@@ -79,6 +77,18 @@
                     this.coordinates = coordinates;
                 })
                 .catch(error => alert(error));
+        },
+
+        methods: {
+            async signOut(){
+                try{
+                    const data = await firebase.auth().signOut();
+                    console.log(data)
+                    this.$router.replace({name: "login"})
+                }catch(err){
+                    console.log(err)
+                }
+            }
         }
     }
 </script>

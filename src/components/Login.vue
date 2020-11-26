@@ -14,15 +14,15 @@
     <div class="login">
       <h1>Log in to your Eco-Pal account</h1>
       <b-field label="Email">
-          <b-input type="email" value="john@" maxlength="30" v-model="email">
+          <b-input type="email" placeholder="email" maxlength="30" v-model="email">
           </b-input>
       </b-field>
       <b-field label="Password">
-          <b-input type="password" value="password123" v-model="password" password-reveal>
+          <b-input type="password" placeholder="password" v-model="password" password-reveal>
           </b-input>
       </b-field>
       <div class="submitButton">
-        <b-button @click="login" type="is-primary is-light" native-type="submit">Log In</b-button>
+        <b-button @click="pressed" type="is-primary is-light" native-type="submit">Log In</b-button>
       </div>
       <div class="text">
         <p>Dont have an account? <router-link to="/signup">Sign up to Eco-Pal</router-link></p>
@@ -32,21 +32,26 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
+import "firebase/auth";
 export default {
-  name: "login",
+  methods: {
+    async pressed(){
+      try{
+        const val = await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        console.log(val)
+        this.$router.replace({name: "home"})
+      }catch(err){
+        console.log(err)
+      }
+    }
+  },
   data(){
     return {
       email: "",
       password: "",
     }
-  },
-  methods: {
-    login: function(){
-      console.log("Email: " + this.email);
-      console.log("Password: " + this.password);
-    }
   }
-
 }
 </script>
 
