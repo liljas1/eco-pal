@@ -13,3 +13,6 @@ export const db = firebase
     measurementId: "G-KCWE176Z13"
   })
   .database()
+
+  // export const addressRef = db.ref('addresses')
+  export const markerRef = db.ref('markers')

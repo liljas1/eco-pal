@@ -1,15 +1,6 @@
 <template class="html">
   <div class="body">
       <b-navbar type="is-dark" fixed-top>
-          <template slot="brand">
-              <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                  <img
-                      src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-                      alt="Lightweight UI components for Vue.js based on Bulma"
-                  >
-              </b-navbar-item>
-          </template>
-
           <template slot="start">
                 <b-navbar-item href=#>
                     Home
@@ -37,7 +28,7 @@
       <section>
         <div class="header">
           <div>
-            <h1>Help making your streets cleaner and eco frendly with Eco-Pal</h1>
+            <h1>Help make your streets cleaner and eco friendly with Eco-Pal</h1>
             <div class="buttons" style="padding: 30px 0 100px">
               <b-button tag="router-link" to="/login" type="is-link">Get Started</b-button>
             </div>  
