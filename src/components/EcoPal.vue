@@ -31,32 +31,19 @@
             <b-field label="Location">
                 <gmap-autocomplete class="auto" @place_changed="setPlace" placeholder="Enter an address here..."></gmap-autocomplete>
             </b-field>
-            <b-field class="file is-primary">
-                <b-upload v-model="file" class="file-label">
-                    <span class="file-cta">
-                        <span class="file-label">Click to upload</span>
-                    </span>
-                    <span class="file-name" v-if="file">
-                        {{ file.name }}
-                    </span>
-                </b-upload>
-            </b-field>
             <b-field label="Description" class="description">
                 <b-input maxlength="200" type="textarea" v-model="description" placeholder="Type your message here..."></b-input>
             </b-field>
+            <div v-if="imageData!=null">                     
+                <img class="preview" height="268" width="356" :src="img1">
+                <br>
+            </div>
             <b-button class="button" @click="addMarkers" type="is-primary is-light" native-type="submit">Add Marker</b-button>
             <div>
-                <div>
-                    <b-button class="button" @click="click1" type="is-primary is-light" native-type="submit">choose photo</b-button>
-                    <input type="file" ref="input1"
-                        style="display: none"
-                        @change="previewImage" accept="image/*" >
-                </div>
-                <div v-if="imageData!=null">                     
-                    <img class="preview" height="268" width="356" :src="img1">
-                    <br>
-                </div>   
-                <b-button class="button" @click="create" type="is-primary is-light" native-type="submit">create</b-button>
+                <b-button class="button" @click="click1" type="is-primary is-light" native-type="submit">Upload a photo</b-button>
+                <input type="file" ref="input1"
+                    style="display: none"
+                    @change="previewImage" accept="image/*" >
             </div>
         </section>
 
@@ -145,19 +132,6 @@ import { markerRef } from '../firebase.js';
         methods: {
 
             // image storing
-            create () {
-                const post = {
-                    photo: this.img1,     
-                }
-                firebase.database().ref('PhotoGallery').push(post)
-                .then((response) => {
-                    console.log(response)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-            },
-
             click1() {
                 this.$refs.input1.click()   
             },
@@ -191,6 +165,17 @@ import { markerRef } from '../firebase.js';
             },
 
             addMarkers() {
+                const post = {
+                    photo: this.img1,     
+                }
+                firebase.database().ref('PhotoGallery').push(post)
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+
                 if(this.currentPlace) {
                     const marker = {
                         lat: this.currentPlace.geometry.location.lat(),
@@ -206,7 +191,10 @@ import { markerRef } from '../firebase.js';
             toggleInfo: function (marker) {
                 this.infoPosition = marker.position;
                 this.infoOpened = true;
-                this.infoOptions.content = `<p>${marker.description}</p><img src="${marker.image}" style="height:200px; width:200px "/>`
+                this.infoOptions.content = `<p class="imgDesc">${marker.description}</p><br/>
+                <div style="width: 300px">
+                    <img src="${marker.image}" style="width:100%;"/>
+                </div>`
             },
 
             // sign out
