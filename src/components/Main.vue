@@ -30,63 +30,23 @@
         <div class="main">
           <div class="section">
             <div class="sectionText">
-              <h2>This is the first div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+              <h2>Sign in and get started</h2>
+              <p>
+                Starting is as simple as just creating a user!
+              </p>
             </div>
             <div class="sectionText">
-              <h2>This is the second div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+              <h2>Help yourself by helping others</h2>
+              <p>
+                With Eco-Pal, help us and others by marking the waste you find in inappropriate places 
+                so we can take care of it.
+              </p>
             </div>
             <div class="sectionText">
-              <h2>This is the third div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-            </div>
-          </div>
-
-          <div class="section">
-            <div class="sectionText">
-              <h2>This is the first div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-            </div>
-            <div class="sectionText">
-              <h2>This is the second div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-            </div>
-            <div class="sectionText">
-              <h2>This is the third div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-            </div>
-          </div>
-          <div class="section">
-            <div class="sectionText">
-              <h2>This is the first div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-            </div>
-            <div class="sectionText">
-              <h2>This is the second div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
-            </div>
-            <div class="sectionText">
-              <h2>This is the third div</h2>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                Fusce non velit vel turpis hendrerit congue. 
-                Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. </p>
+              <h2>Specify where and what you come across</h2>
+              <p>
+                Submit an address, discription or even a picture, so everyone can see it.
+              </p>
             </div>
           </div>
         </div>
@@ -121,6 +81,7 @@
             <div class="footer_section contact">
               <h1>Contact us</h1>
               <br>
+              <b-input type="email" maxlength="30" placeholder="Enter the subject of your mail" v-model="subject"></b-input>
               <b-input maxlength="200" type="textarea" placeholder="Enter your message here..." v-model="message"></b-input>
               <b-button type="is-primary is-light" @click="pressed">Submit</b-button>
             </div>
@@ -138,6 +99,7 @@
 export default {
   data(){
     return {
+      subject: "",
       message: "",
       error: "",
     }
@@ -145,7 +107,7 @@ export default {
 
   methods: { 
     pressed() {
-      window.open(`mailto:eco-pal@example.com?&body=${this.message}`);
+      window.open(`mailto:eco-pal@example.com?&subject=${this.subject}&body=${this.message}`);
     }
   }
 }
@@ -197,6 +159,7 @@ export default {
   .sectionText h2{
     font-size: 20px;
     font-weight: bold;
+    padding-bottom: 10px;
   }
 
   .footer{
