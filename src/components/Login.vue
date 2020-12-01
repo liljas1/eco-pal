@@ -1,14 +1,11 @@
 <template>
   <div>
     <b-navbar type="is-dark" fixed-top>
-        <template slot="brand">
-            <b-navbar-item tag="router-link" :to="{ path: '/' }">
-                <img
-                    src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-                    alt="Lightweight UI components for Vue.js based on Bulma"
-                >
-            </b-navbar-item>
-        </template>
+      <template slot="start">
+        <b-navbar-item>
+            <router-link to="/" style="color:white">Home</router-link>
+        </b-navbar-item>
+      </template>
     </b-navbar>
 
     <div class="login">
@@ -21,6 +18,7 @@
           <b-input type="password" placeholder="password" v-model="password" password-reveal>
           </b-input>
       </b-field>
+      <div class="error">{{ error }}</div>
       <div class="submitButton">
         <b-button @click="pressed" type="is-primary is-light" native-type="submit">Log In</b-button>
       </div>
@@ -42,7 +40,12 @@ export default {
         console.log(val)
         this.$router.replace({name: "home"})
       }catch(err){
-        console.log(err)
+        if(err.code == "auth/invalid-email") {
+          this.error = err.message
+        }
+        else{
+          this.error = "There is no user record corresponding to this identifier."
+        }
       }
     }
   },
@@ -50,6 +53,7 @@ export default {
     return {
       email: "",
       password: "",
+      error: "",
     }
   }
 }
@@ -72,5 +76,11 @@ export default {
   }
   .submitButton{
     float: left;
+  }
+
+  .error{
+    padding-bottom: 10px;
+    color: red;
+    font-size: 15px;
   }
 </style>

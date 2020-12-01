@@ -2,17 +2,9 @@
   <div class="body">
       <b-navbar type="is-dark" fixed-top>
           <template slot="start">
-                <b-navbar-item href=#>
-                    Home
+                <b-navbar-item>
+                    <router-link to="/" style="color:white">Home</router-link>
                 </b-navbar-item>
-                <b-navbar-dropdown label="Info">
-                    <b-navbar-item href="#">
-                        About
-                    </b-navbar-item>
-                    <b-navbar-item href="#">
-                        Contact
-                    </b-navbar-item>
-                </b-navbar-dropdown>
             </template>
             
             <template slot="end">
@@ -119,19 +111,18 @@
               <h1>Quick links</h1>
               <br>
               <ul>
-                <a href="#"><li>Events</li></a>
-                <a href="#"><li>Team</li></a>
-                <a href="#"><li>Terms and conditions</li></a>
-                <a href="#"><li>Privacy Policy</li></a>
+                <a><li><router-link to="/">Events</router-link></li></a>
+                <a><li><router-link to="/">Teams</router-link></li></a>
+                <a><li><router-link to="/">Terms and conditions</router-link></li></a>
+                <a><li><router-link to="/">Privacy Policy</router-link></li></a>
               </ul>
             </div>
 
             <div class="footer_section contact">
               <h1>Contact us</h1>
               <br>
-              <b-input type="email" maxlength="30" placeholder="Enter your email..."></b-input>
-              <b-input maxlength="200" type="textarea" placeholder="Enter your message here..."></b-input>
-              <b-button type="is-primary is-light" native-type="submit">Submit</b-button>
+              <b-input maxlength="200" type="textarea" placeholder="Enter your message here..." v-model="message"></b-input>
+              <b-button type="is-primary is-light" @click="pressed">Submit</b-button>
             </div>
           </div>
 
@@ -145,6 +136,18 @@
 
 <script>
 export default {
+  data(){
+    return {
+      message: "",
+      error: "",
+    }
+  },
+
+  methods: { 
+    pressed() {
+      window.open(`mailto:eco-pal@example.com?&body=${this.message}`);
+    }
+  }
 }
 </script>
 
@@ -152,7 +155,6 @@ export default {
   section{
     max-width: 100%;
     padding-top: 100px;
-    /*background-color: mediumseagreen;*/
   }
   .header{
     margin: 0 auto;
@@ -248,7 +250,7 @@ export default {
     position: absolute;
     bottom: 0px;
     left: 0px;
-    padding-top: 20px;
+    padding-top: 15px;
     background-color: darkslategray;
     color: rgba(245, 245, 245, 0.774);
   }
@@ -285,7 +287,7 @@ export default {
       }
 
       .footer{
-        height: 900px;
+        height: 950px;
       }
 
       .footerContent{
