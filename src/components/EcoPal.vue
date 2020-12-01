@@ -29,7 +29,7 @@
         <section class="form">
             <div v-show="error" style="red">{{ error }}</div>
             <b-field label="Location">
-                <gmap-autocomplete class="auto" @place_changed="setPlace" placeholder="Enter an address here..."></gmap-autocomplete>
+                <gmap-autocomplete ref="autocomplete" class="auto" @place_changed="setPlace" placeholder="Enter an address here..."></gmap-autocomplete>
             </b-field>
             <b-field label="Description" class="description">
                 <b-input maxlength="200" type="textarea" v-model="description" placeholder="Type your message here..."></b-input>
@@ -79,7 +79,6 @@ import firebase from "firebase/app";
 import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
-// import firebase from "firebase";
 import { markerRef } from '../firebase.js';
 
     export default {
@@ -165,23 +164,12 @@ import { markerRef } from '../firebase.js';
             },
 
             addMarkers() {
-                const post = {
-                    photo: this.img1,     
-                }
-                firebase.database().ref('PhotoGallery').push(post)
-                .then((response) => {
-                    console.log(response)
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-
                 if(this.currentPlace) {
                     const marker = {
                         lat: this.currentPlace.geometry.location.lat(),
                         lng: this.currentPlace.geometry.location.lng(),
                     };
-                    markerRef.push({ position: marker, description: this.description, image: this.img1});
+                    markerRef.push({ address: this.$refs.autocomplete.$refs.input.value, position: marker, description: this.description, image: this.img1});
                     this.places.push(this.currentPlace);
                     this.currentPlace = null;
                 }
@@ -191,7 +179,10 @@ import { markerRef } from '../firebase.js';
             toggleInfo: function (marker) {
                 this.infoPosition = marker.position;
                 this.infoOpened = true;
-                this.infoOptions.content = `<p class="imgDesc">${marker.description}</p><br/>
+                this.infoOptions.content = ` <h1 style="font-size: 15px;">${marker.address}</h1>
+                <br/>
+                <p class="imgDesc">${marker.description}</p>
+                <br/>
                 <div style="width: 300px">
                     <img src="${marker.image}" style="width:100%;"/>
                 </div>`
