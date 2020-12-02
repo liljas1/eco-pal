@@ -62,3 +62,5 @@ firebase.auth().onAuthStateChanged(user => {
   }
 })
 
+export const google = VueGoogleMaps
+

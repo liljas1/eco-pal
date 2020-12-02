@@ -31,7 +31,8 @@
             <b-field label="Location">
                 <gmap-autocomplete ref="autocomplete" class="auto" @place_changed="setPlace" placeholder="Enter an address here..."></gmap-autocomplete>
             </b-field>
-            <b-field label="Description" class="description">
+            <b-button @click="getCurrentLocation" type="is-primary is-light" style="float: left">Current Location</b-button>
+            <b-field label="Description" style="margin-top: 100px">
                 <b-input maxlength="200" type="textarea" v-model="description" placeholder="Type your message here..."></b-input>
             </b-field>
             <div v-if="imageData!=null">                     
@@ -49,6 +50,7 @@
 
         <section class="map" id="map" ref="map">
             <GmapMap
+                ref="mapRef"
                 :center="coordinates"
                 :zoom="12"
                 style="height: 720px; margin: 0 auto"
@@ -80,6 +82,8 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/storage';
 import { markerRef } from '../firebase.js';
+import { gmapApi } from 'vue2-google-maps'
+
 
     export default {
 
@@ -89,7 +93,7 @@ import { markerRef } from '../firebase.js';
 
         data (){
             return{
-                // markers
+                // info window
                 infoPosition: null,
                 infoOpened: false,
                 infoContent: null,
@@ -97,6 +101,7 @@ import { markerRef } from '../firebase.js';
                     content: ''
                 },
 
+                // markers
                 places: [],
                 markers: [],
                 currentPlace: null,
@@ -119,6 +124,10 @@ import { markerRef } from '../firebase.js';
             }
         },
 
+        computed: {
+            google: gmapApi
+        },
+
         // center map on current location
         created (){
             this.$getLocation({})
@@ -132,7 +141,7 @@ import { markerRef } from '../firebase.js';
 
             // image storing
             click1() {
-                this.$refs.input1.click()   
+                this.$refs.input1.click()
             },
 
             previewImage(event) {
@@ -197,6 +206,22 @@ import { markerRef } from '../firebase.js';
                 }catch(err){
                     console.log(err)
                 }
+            },
+
+            getCurrentLocation() {
+                const geocoder = new this.google.maps.Geocoder();
+
+                geocoder.geocode({ location: this.coordinates }, (results, status) => {
+                    if (status === "OK") {
+                        if (results[0]) {
+                            this.$refs.autocomplete.$refs.input.value = results[0].formatted_address
+                        } else {
+                            window.alert("No results found");
+                        }
+                    } else {
+                        window.alert("Geocoder failed due to: " + status);
+                    }
+                });
             },
 
         }
