@@ -27,12 +27,35 @@
         </b-navbar>
 
         <section class="form">
-            <div v-show="error" style="red">{{ error }}</div>
             <b-field label="Location">
                 <gmap-autocomplete ref="autocomplete" class="auto" @place_changed="setPlace" placeholder="Enter an address here..."></gmap-autocomplete>
             </b-field>
+            <div v-show="error" style="color: red">{{ error }}</div>
             <b-button @click="getCurrentLocation" type="is-primary is-light" style="float: left">Current Location</b-button>
-            <b-field label="Description" style="margin-top: 100px">
+            <section class="radioButtons">
+                <div class="field">
+                <b-radio v-model="radio"
+                    native-value="info"
+                    type="is-info">
+                    Paper
+                </b-radio>
+                </div>
+                <div class="field">
+                    <b-radio v-model="radio"
+                        native-value="success"
+                        type="is-success">
+                        Glass
+                    </b-radio>
+                </div>
+                <div class="field">
+                    <b-radio v-model="radio"
+                        native-value="warning"
+                        type="is-warning">
+                        Plastic
+                    </b-radio>
+                </div>
+            </section>
+            <b-field label="Description" class="desc">
                 <b-input maxlength="200" type="textarea" v-model="description" placeholder="Type your message here..."></b-input>
             </b-field>
             <div v-if="imageData!=null">                     
@@ -54,6 +77,7 @@
                 :center="coordinates"
                 :zoom="12"
                 style="height: 720px; margin: 0 auto"
+                @click="addMarkerMouse"
             >
                 <Gmap-info-window
                     :position="infoPosition"
@@ -120,7 +144,10 @@ import { gmapApi } from 'vue2-google-maps'
 
                 // image
                 img1: '',
-                imageData: null
+                imageData: null,
+
+                // radio buttons
+                radio: 'default',
             }
         },
 
@@ -173,16 +200,20 @@ import { gmapApi } from 'vue2-google-maps'
             },
 
             addMarkers() {
+                if(!this.currentPlace) {
+                    this.error = "Please enter the address";
+                    return
+                }
+
                 if(this.currentPlace) {
+                    this.error = "";
                     const marker = {
                         lat: this.currentPlace.geometry.location.lat(),
                         lng: this.currentPlace.geometry.location.lng(),
                     };
                     markerRef.push({ address: this.$refs.autocomplete.$refs.input.value, position: marker, description: this.description, image: this.img1});
                     this.places.push(this.currentPlace);
-                    this.currentPlace = null;
                 }
-
             },
 
             toggleInfo: function (marker) {
@@ -197,17 +228,13 @@ import { gmapApi } from 'vue2-google-maps'
                 </div>`
             },
 
-            // sign out
-            async signOut(){
-                try{
-                    const data = await firebase.auth().signOut();
-                    console.log(data)
-                    this.$router.replace({name: "login"})
-                }catch(err){
-                    console.log(err)
-                }
+            addMarkerMouse(event) {
+                this.error = ""
+                console.log(event.latLng.lat())
+                console.log(event.latLng.lng())
             },
 
+            // get current location
             getCurrentLocation() {
                 const geocoder = new this.google.maps.Geocoder();
 
@@ -224,6 +251,21 @@ import { gmapApi } from 'vue2-google-maps'
                 });
             },
 
+            // sign out
+            async signOut(){
+                try{
+                    const data = await firebase.auth().signOut();
+                    console.log(data)
+                    this.$router.replace({name: "login"})
+                }catch(err){
+                    console.log(err)
+                }
+            },
+
+            mark(event) {
+                console.log(event.latLng.lat())
+                console.log(event.latLng.lng())
+            }
         }
     }
 </script>
@@ -251,6 +293,12 @@ import { gmapApi } from 'vue2-google-maps'
     .button{
         float: right;
         margin: 5px;
+    }
+
+    .radioButtons{
+        display: flex;
+        width: 100%;
+        padding-top: 15px;
     }
 
     @media screen and (max-width: 1000px) {
