@@ -35,26 +35,34 @@
             <section class="radioButtons">
                 <div class="field">
                 <b-radio v-model="radio"
-                    native-value="info"
+                    native-value="paper"
                     type="is-info">
                     Paper
                 </b-radio>
                 </div>
                 <div class="field">
                     <b-radio v-model="radio"
-                        native-value="success"
+                        native-value="glass"
                         type="is-success">
                         Glass
                     </b-radio>
                 </div>
                 <div class="field">
                     <b-radio v-model="radio"
-                        native-value="warning"
+                        native-value="plastic"
                         type="is-warning">
                         Plastic
                     </b-radio>
                 </div>
+                <div class="field">
+                    <b-radio v-model="radio"
+                        native-value="other"
+                        type="is-danger">
+                        Other
+                    </b-radio>
+                </div>
             </section>
+            <div v-show="radioError" style="color: red">{{ radioError }}</div>
             <b-field label="Description" class="desc">
                 <b-input maxlength="200" type="textarea" v-model="description" placeholder="Type your message here..."></b-input>
             </b-field>
@@ -92,6 +100,7 @@
                     :position="m.position"
                     :clickable="true"
                     :draggable="false"
+                    :icon="m.color"
                     @click="toggleInfo(m, index)"
                 />
             </GmapMap>
@@ -129,6 +138,7 @@ import { gmapApi } from 'vue2-google-maps'
                 places: [],
                 markers: [],
                 currentPlace: null,
+                markerOptions: "",
 
                 // input
                 description: "",
@@ -147,7 +157,8 @@ import { gmapApi } from 'vue2-google-maps'
                 imageData: null,
 
                 // radio buttons
-                radio: 'default',
+                radio: "",
+                radioError: "",
             }
         },
 
@@ -193,7 +204,6 @@ import { gmapApi } from 'vue2-google-maps'
                     );
             },
 
-
             // adding markers
             setPlace(place) {
                 this.currentPlace = place;
@@ -205,13 +215,30 @@ import { gmapApi } from 'vue2-google-maps'
                     return
                 }
 
+                if(!this.radio) {
+                    this.error = "";
+                    this.radioError = "Please select a dumpster or other if reporting trash on the street";
+                    return
+                }
+                if(this.radio == "paper") {
+                    this.markerOptions = { url: require('../assets/markers/blue_marker.png')};
+                } else if(this.radio == "glass") {
+                    this.markerOptions = { url: require('../assets/markers/green_marker.png')};
+                }
+                else if(this.radio == "plastic") {
+                    this.markerOptions = { url: require('../assets/markers/yellow_marker.png')};
+                } else {
+                    this.markerOptions = "";
+                }
+
                 if(this.currentPlace) {
                     this.error = "";
+                    this.radioError = "";
                     const marker = {
                         lat: this.currentPlace.geometry.location.lat(),
                         lng: this.currentPlace.geometry.location.lng(),
                     };
-                    markerRef.push({ address: this.$refs.autocomplete.$refs.input.value, position: marker, description: this.description, image: this.img1});
+                    markerRef.push({ address: this.$refs.autocomplete.$refs.input.value, position: marker, color: this.markerOptions, description: this.description, image: this.img1});
                     this.places.push(this.currentPlace);
                 }
             },
@@ -228,17 +255,34 @@ import { gmapApi } from 'vue2-google-maps'
                 </div>`
             },
 
-            addMarkerMouse(event) {
-                this.error = ""
-                console.log(event.latLng.lat())
-                console.log(event.latLng.lng())
-            },
-
             // get current location
             getCurrentLocation() {
                 const geocoder = new this.google.maps.Geocoder();
 
                 geocoder.geocode({ location: this.coordinates }, (results, status) => {
+                    if (status === "OK") {
+                        if (results[0]) {
+                            this.$refs.autocomplete.$refs.input.value = results[0].formatted_address
+                        } else {
+                            window.alert("No results found");
+                        }
+                    } else {
+                        window.alert("Geocoder failed due to: " + status);
+                    }
+                });
+            },
+
+            // get location of mouse click
+            addMarkerMouse(event) {
+                this.error = ""
+
+                const geocoder = new this.google.maps.Geocoder();
+                const latlng = {
+                    lat: event.latLng.lat(),
+                    lng: event.latLng.lng(),
+                };
+
+                geocoder.geocode({ location: latlng }, (results, status) => {
                     if (status === "OK") {
                         if (results[0]) {
                             this.$refs.autocomplete.$refs.input.value = results[0].formatted_address
@@ -262,10 +306,6 @@ import { gmapApi } from 'vue2-google-maps'
                 }
             },
 
-            mark(event) {
-                console.log(event.latLng.lat())
-                console.log(event.latLng.lng())
-            }
         }
     }
 </script>
@@ -301,7 +341,7 @@ import { gmapApi } from 'vue2-google-maps'
         padding-top: 15px;
     }
 
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1200px) {
         .map, .form{
             width: 100%;
         }
